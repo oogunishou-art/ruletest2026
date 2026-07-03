@@ -268,13 +268,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP'
 
 <!-- 学習タブ -->
 <div id="T-quiz">
-  <div class="sec-hdr">
-    <div class="sec-ttl">🏀 JBAルールテスト</div>
-    <div class="mode-tabs">
+  <div style="margin-bottom:12px">
+    <div class="sec-ttl" style="margin-bottom:8px">🏀 JBAルールテスト</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
       <button class="mode-tab active" id="m-order"   onclick="SM('order')">番号順</button>
       <button class="mode-tab"        id="m-shuffle" onclick="SM('shuffle')">シャッフル</button>
       <button class="mode-tab"        id="m-wrong"   onclick="SM('wrong')">苦手</button>
-      <button class="mode-tab"        id="m-mini"    onclick="SM('mini')">🎯 小テスト</button>
+      <button class="mode-tab"        id="m-mini"    onclick="SM('mini')" style="background:#f9f5ff;border-color:#d9d0f5;color:#6941c6">🎯 小テスト25問</button>
     </div>
   </div>
   <div class="stats-row">
@@ -848,12 +848,12 @@ function ST(t){
 
 // 学習タブ表示時：途中再開ダイアログ
 function QUIZ_checkResume(){
-  if(mode==='mini'||mode==='wrong')return;
+  if(mode==='wrong')return;
   var saved=LQP(mode);
   if(!saved||saved.qi<=0||saved.qi>=saved.qids.length)return;
-  // 現在表示中のqiが0（リセット状態）の場合のみダイアログ表示
-  if(qi>0)return; // 既に再開済み
-  QUIZ_resumeDialog(saved);
+  // 既に進行中（qi>0）なら表示しない
+  if(qi>0&&qi===saved.qi)return;
+  setTimeout(function(){QUIZ_resumeDialog(saved);},100);
 }
 
 function QUIZ_resumeDialog(saved){
@@ -954,7 +954,7 @@ function BQ(forceNew){
   }
   else{var w=GW();queue=ALL.filter(function(c){return w.indexOf(c.id)>=0;});}
   qi=0;ses={ok:0,ng:0};chosen=null;
-  if(mode!=='mini')SQP();
+  // 新規スタート時はここでSQPしない（ダイアログからの復元を壊さないため）
 }
 function SM(m){
   mode=m;
@@ -966,7 +966,8 @@ function SM(m){
   if(m==='mini'){
     var savedMini=LQP('mini');
     if(savedMini&&savedMini.qi>0&&savedMini.qi<savedMini.qids.length){
-      qi=0;RMHIST();QUIZ_resumeDialog(savedMini);
+      BQ(true);RQ();RMHIST();
+      setTimeout(function(){QUIZ_resumeDialog(savedMini);},100);
     } else {
       BQ(true);RQ();RMHIST();
     }
@@ -976,8 +977,9 @@ function SM(m){
   // order/shuffle：保存済みがあればダイアログ
   var saved=LQP(m);
   if(saved&&saved.qi>0&&saved.qi<saved.qids.length){
-    qi=0; // ダイアログ表示のためリセット
-    QUIZ_resumeDialog(saved);
+    // まず通常スタートしてUI表示してからダイアログ
+    BQ(true);RQ();
+    setTimeout(function(){QUIZ_resumeDialog(saved);},100);
   } else {
     BQ(true);RQ();
   }
@@ -1503,19 +1505,20 @@ function E(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 rec=LRec();rchk=LChk();daily=LDaily();memos=LMemo();var _rfd=LRF();rfNotes=_rfd.notes;rfGoals=_rfd.goals;
 miniHistory=LMini();
 var now=new Date();calYear=now.getFullYear();calMonth=now.getMonth()+1;
-// 途中再開チェック → あれば再開、なければ通常スタート
-// 番号順・シャッフル・小テストそれぞれ保存済み確認
+// 途中再開チェック：order/shuffle/miniそれぞれ確認
 var _qp_o=LQP('order'), _qp_s=LQP('shuffle'), _qp_m=LQP('mini');
 var _qp=(_qp_o&&_qp_o.qi>0&&_qp_o.qi<_qp_o.qids.length)?_qp_o
        :((_qp_s&&_qp_s.qi>0&&_qp_s.qi<_qp_s.qids.length)?_qp_s
        :((_qp_m&&_qp_m.qi>0&&_qp_m.qi<_qp_m.qids.length)?_qp_m:null));
 if(_qp){
+  // 保存済みモードをアクティブにして通常通りフレッシュ表示
   mode=_qp.mode;
   ['order','shuffle','wrong','mini'].forEach(function(k){var el=document.getElementById('m-'+k);if(el)el.className='mode-tab'+(k===mode?' active':'');});
-  BQ(true); // 一旦フレッシュ状態でUI初期化
-  RQ();
-  // 少し遅らせてダイアログ表示（DOMが安定してから）
-  setTimeout(function(){QUIZ_resumeDialog(_qp);},200);
+  if(mode==='mini'){document.getElementById('mini-history-area').style.display='';}
+  // まず通常スタートしてUI表示（q[0]を出す）
+  BQ(true);RQ();
+  // ダイアログでユーザーに選ばせる（saved進捗はまだlocalStorageに残っている）
+  setTimeout(function(){QUIZ_resumeDialog(_qp);},300);
 } else {
   BQ(true);RQ();
 }
@@ -2120,19 +2123,20 @@ function autoResizeAll(){var tas=document.querySelectorAll('.rf-textarea,.memo-t
 rec=LRec();rchk=LChk();daily=LDaily();memos=LMemo();var _rfd=LRF();rfNotes=_rfd.notes;rfGoals=_rfd.goals;
 miniHistory=LMini();
 var now=new Date();calYear=now.getFullYear();calMonth=now.getMonth()+1;
-// 途中再開チェック → あれば再開、なければ通常スタート
-// 番号順・シャッフル・小テストそれぞれ保存済み確認
+// 途中再開チェック：order/shuffle/miniそれぞれ確認
 var _qp_o=LQP('order'), _qp_s=LQP('shuffle'), _qp_m=LQP('mini');
 var _qp=(_qp_o&&_qp_o.qi>0&&_qp_o.qi<_qp_o.qids.length)?_qp_o
        :((_qp_s&&_qp_s.qi>0&&_qp_s.qi<_qp_s.qids.length)?_qp_s
        :((_qp_m&&_qp_m.qi>0&&_qp_m.qi<_qp_m.qids.length)?_qp_m:null));
 if(_qp){
+  // 保存済みモードをアクティブにして通常通りフレッシュ表示
   mode=_qp.mode;
   ['order','shuffle','wrong','mini'].forEach(function(k){var el=document.getElementById('m-'+k);if(el)el.className='mode-tab'+(k===mode?' active':'');});
-  BQ(true); // 一旦フレッシュ状態でUI初期化
-  RQ();
-  // 少し遅らせてダイアログ表示（DOMが安定してから）
-  setTimeout(function(){QUIZ_resumeDialog(_qp);},200);
+  if(mode==='mini'){document.getElementById('mini-history-area').style.display='';}
+  // まず通常スタートしてUI表示（q[0]を出す）
+  BQ(true);RQ();
+  // ダイアログでユーザーに選ばせる（saved進捗はまだlocalStorageに残っている）
+  setTimeout(function(){QUIZ_resumeDialog(_qp);},300);
 } else {
   BQ(true);RQ();
 }

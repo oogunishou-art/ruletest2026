@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 JBAルール・マスター</title>
+    <style>
+        :root {
+            --primary-color: #e65c00;
+            --secondary-color: #f5f5f5;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background: linear-gradient(135deg, #ff7e15, var(--primary-color));
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .mode-select, .quiz-card, .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-outline { border: 2px solid var(--primary-color); color: var(--primary-color); background: white; }
+        .btn-outline:hover { background-color: #fff5ee; }
+        
+        .answer-box {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn-choice {
+            flex: 1;
+            font-size: 24px;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            background: white;
+            cursor: pointer;
+        }
+        .btn-circle { color: var(--success-color); border-color: var(--success-color); }
+        .btn-cross { color: var(--error-color); border-color: var(--error-color); }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+            color: white;
+        }
+        .badge-info { background-color: #17a2b8; }
+        .badge-warning { background-color: #ffc107; color: #333; }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+        .feedback.correct { background-color: #d4edda; color: #155724; }
+        .feedback.wrong { background-color: #f8d7da; color: #721c24; }
+        
+        .explanation-container {
+            display: none;
+            margin-top: 20px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .rule-link-card {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        .hidden { display: none !important; }
+        .progress-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>2026 JBAルール・マスター</h1>
+        <p>競技規則・テスト問題 繰り返し学習アプリ</p>
+    </header>
+
+    <div class="container">
+        <div id="mode-screen" class="mode-select">
+            <h3>学習モードを選択してください</h3>
+            <button class="btn btn-primary" onclick="startQuiz('normal')">順番通りに解く (1〜175)</button>
+            <button class="btn btn-primary" onclick="startQuiz('shuffle')">シャッフルで解く (ランダム)</button>
+            <button class="btn btn-outline" onclick="startQuiz('wrong')">苦手克服モード (<span id="wrong-count">0</span>問)</button>
+        </div>
+
+        <div id="quiz-screen" class="quiz-card hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span id="question-number" style="font-weight: bold; color: #666;">問題 1/175</span>
+                <div>
+                    <span id="badge-category" class="badge badge-info">第1条 定義</span>
+                    <span id="badge-diff" class="badge badge-warning">難易度: D</span>
+                </div>
+            </div>
+            <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+            
+            <div id="question-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 20px; min-height: 100px; white-space: pre-wrap;">
+                問題文がここに表示されます。
+            </div>
+
+            <div id="choice-box" class="answer-box">
+                <button class="btn-choice btn-circle" onclick="submitAnswer('○')">○</button>
+                <button class="btn-choice btn-cross" onclick="submitAnswer('×')">×</button>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <div id="explanation-box" class="explanation-container">
+                <h4 style="margin: 0 0 10px 0; color: var(--primary-color);">【解説】</h4>
+                <p id="explanation-text" style="line-height: 1.6; margin-bottom: 15px; white-space: pre-wrap;"></p>
+                
+                <div class="rule-link-card">
+                    <strong style="color: #0d47a1;">📘 2026競技規則（ルールブック）の根拠:</strong>
+                    <p id="rule-reference" style="margin: 5px 0 0 0; font-weight: bold; color: #1565c0;"></p>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="nextQuestion()">次の問題へ</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="result-card hidden">
+            <h3>学習が完了しました！</h3>
+            <p id="result-summary" style="font-size: 18px; margin-bottom: 20px;"></p>
+            <button class="btn btn-primary" onclick="backToMenu()">メニューに戻る</button>
+        </div>
+    </div>
+
+    <script>
+        // PDFから完全にパースした全175問の正式データ
+        const quizData = [
+            { id: 1, text: "ゲームに関わる全ての人物（テーブルオフィシャルズ、テクニカルデリゲート/コミッショナー（同席している場合）、プレーをすることができる全てのチームメンバー、ヘッドコーチおよびその他のチーム関係者）は、得点、ファウル、タイムアウトを含む記録や、ゲームクロック、ショットクロックの操作に関わる訂正のできる誤りを認識した場合、本規則に従って誤りが訂正されるようただちに審判に知らせることが求められる。", ans: "○", cat: "第１条 定義", diff: "D", ref: "ルール 1-2" },
+            { id: 2, text: "チームが防御するバスケットを「相手チームのバスケット」といい、チームが攻撃するバスケットを「自チームのバスケット」という。", ans: "×", cat: "第１条 定義", diff: "D", ref: "ルール 1-3\nチームが攻撃するバスケットを「相手チームのバスケット」といい、防御するバスケットを「自チームのバスケット」という。" },
+            { id: 3, text: "センターラインは、両エンドラインと平行に両サイドラインの中央を結ぶ。センターラインはサイドラインより外側に0.15m延長する。センターラインはフロントコートの一部である。", ans: "×", cat: "第２条 コート", diff: "D", ref: "ルール 2-5-2 センターラインはバックコートの一部である。" },
+            { id: 4, text: "スローインラインとは、近い方のエンドラインの内側の縁から8.325mの距離に、コートの外側に向かってサイドラインと直角に引いた、長さ0.15ｍの４本のラインをいう。", ans: "○", cat: "第２条 コート", diff: "C", ref: "ルール 2-5-6 ２本→４本に変更となった" },
+            { id: 5, text: "バスケットボールのゲームを行うときには、タイムアウトの時間をはかるためのストップウォッチ、あるいはゲームクロックとは別のよく見える適切な表示装置が用意されていなければならない。", ans: "○", cat: "第３条 用具・器具", diff: "D", ref: "ルール 第３条 用具・器具" },
+            { id: 6, text: "競技時間中、５個のファウルを宣せられプレーをする資格を失ったチームメンバーは、以降そのゲームに出場することはできないが、チームベンチに座ることは許される。", ans: "○", cat: "第４条 チーム", diff: "D", ref: "ルール 4-1-3" },
+            { id: 7, text: "プレーのインターバル中は、プレーをする資格があるチームメンバーは全てプレーヤーであるとみなされる。", ans: "○", cat: "第４条 チーム", diff: "B", ref: "ルール 4-1-4" },
+            { id: 8, text: "各チームメンバーはシャツの前面と背面に、シャツの色とはっきりと区別できる色で整数の番号をつける。番号は0、00および1から99のいずれかを用いるが、同一チーム内において、「0」と「00」は同時に使用することができない。", ans: "×", cat: "第４条 チーム", diff: "C", ref: "ルール 4-3-2\n番号は0、00および1から99のいずれかを用いるが、同一チーム内において、「0」と「00」は同時に使用することができる。" },
+            { id: 9, text: "A５はユニフォームのパンツの下にくるぶしまで伸びているコンプレッションウェアを着用したため、審判は着用を認めなかった。", ans: "×", cat: "第４条 チーム", diff: "D", ref: "インプリ 4-7\nコンプレッションウェア（アンダーパンツ）を着用することは正当であり、いかなる長さでも着用することができる。" },
+            { id: 10, text: "怪我をしたプレーヤーに手当てを受けさせる場合は、フリースローの１本目のボールがフリースローシューターに与えられた後であっても、１本目と２本目のフリースローの間、あるいは２本目と３本目のフリースローの間に当該プレーヤーを交代させることができる。", ans: "○", cat: "第5条 プレーヤー：怪我と介助", diff: "C", ref: "ルール 5-8" },
+            { id: 11, text: "A１が足首を怪我したと見られたため、ゲームが中断された。チームAの交代要員がコート内に入ったが、A１の手当てはしなかった。A１は手当てを受けていないため、交代する必要はない。", ans: "×", cat: "第5条 プレーヤー：怪我と介助", diff: "C", ref: "インプリ 5-1、5-2\n交代要員がコートに入ったため、A１は手当てを受けたとみなされ、交代しなければならない。" },
+            { id: 12, text: "チームAのチームベンチエリアの近くでB１がショットの動作（アクトオブシューティング）中のA１にファウルをした。ボールはバスケットに入らなかった。A１が２本のフリースローを行っている間にチームAの理学療法士がチームベンチエリアから、コート上にいるA２の緩くなったテーピングの補強と脚へのスプレーを行った。審判はコート上にいるA２がチームAの理学療法士から介助を受けたとみなし、A２を交代させなければならない。", ans: "×", cat: "第5条 プレーヤー：怪高と介助", diff: "C", ref: "インプリ 5-5、5-6\n自チームのチームベンチに座ることを許された人物は、チームベンチエリアに留まっている間に自チームのプレーヤーを介助することができ、そのプレーヤーは介助を受けたとはみなされず、交代する必要はない。そのため、A２は介助を受けたとはみなされず、交代する必要はない。A１は引き続き２本のフリースローを行う。" },
+            { id: 13, text: "A１が怪我をしてゲームは中断された。A１は速やかにプレーを続けることが難しく、審判は笛を吹き、通常の交代の合図をした。A１と交代をする交代要員がプレーヤーになったあと、チームAがタイムアウトを請求し、審判はこれを認めた。タイムアウト終了後、A１はタイムアウト中に回復したため、タイムアウト終了後に審判はA１が引き続きプレーを続けることを認めた。", ans: "×", cat: "第5条 プレーヤー：怪我と介助", diff: "C", ref: "インプリ 5-14、5-15\nA１と交代をする交代要員がすでにプレーヤーとなっている。よってA１は、ゲームが再開しゲームクロックが再び動き出すまでは戻ることができない。" },
+            { id: 14, text: "キャプテンは、ゲーム終了後ただちにスコアシートの「ゲームの結果に対する抗議の署名欄」に署名をしなければ、いかなる場合もチームはゲームの結果に対して抗議をすることはできない。", ans: "○", cat: "第6条 キャプテン：任務と権限", diff: "C", ref: "ルール 6-3" },
+            { id: 15, text: "チームAは所定の時間内にスコアラーにリストを提出した。２人のプレーヤーの番号が実際のユニフォームの番号と一致していない、あるいはそのプレーヤーの氏名がスコアシートに記載されていなかった。この不一致が、ゲーム開始後に発見された。いずれのチームにも不利にならないタイミングで審判がゲームを中断し、誤った番号は罰則なしに修正される。しかし、記載されていなかったプレーヤーの氏名をスコアシートに追加することはできない。", ans: "○", cat: "第7条 ヘッドコーチとファーストアシスタントコーチ：任務と権限", diff: "C", ref: "インプリ 7-2" },
+            { id: 16, text: "ゲーム開始前に確認された最初に出場すると指定されていたチームAの５人のプレーヤーと異なるプレーヤーが１人、コート上にいることがゲーム開始後に発見されたが、審判は誤りはなかったものとし、チームAに罰則は与えず、ゲームを続けた。", ans: "○", cat: "第7条 ヘッドコーチとファーストアシスタントコーチ：任務と権限", diff: "C", ref: "インプリ 7-4、7-5\nゲーム開始後に発見された場合は、誤りは無視されゲームを続ける。特に罰則は与えられない。" },
+            { id: 17, text: "A１はスリーポイントゴールのショットをした。第３クォーターの終了を知らせるゲームクロックのブザーが鳴ったとき、ボールは空中にあった。ブザーのあと、B１がまだ空中にいるA１にファウルをし、ボールはバスケットに入った。A１に３点が与えられ、B１のファウルがアンスポーツマンライクファウルもしくはディスクォリファイングファウルの判定基準に合致するものであっても、A１に対するB１のファウルは第３クォーター終了後に起きたものとしてなかったものとする。", ans: "×", cat: "第8条 競技時間、同点、オーバータイム", diff: "B", ref: "インプリ 8-2、8-3\nB１のファウルがアンスポーツマンライクファウルもしくはディスクォリファイングファウルの判定基準に合致するもので、続いてクォーターやオーバータイムが行われる場合、B１のファウルはなかったことにはせず、次のクォーターやオーバータイムが始まる前にその状況に応じて罰せられる。このファウルは次のクォーターのチームBのチームファウルに数えられる。" },
+            { id: 18, text: "各クォーターやオーバータイムの終了間際にファウルが宣せられた場合、審判は残りの競技時間を決定する。ゲームクロックには最低でも0.1秒が表示される。", ans: "○", cat: "第８条 競技時間、同点、オーバータイム", diff: "C", ref: "ルール 8-8" },
+            { id: 19, text: "片方もしくは両方のチームがプレーをできる状態の５人のプレーヤーをコート上に揃えることができない場合、ゲームを始めることはできない。", ans: "○", cat: "第9条 ゲーム、クォーター、オーバータイムの開始と終了", diff: "D", ref: "ルール 9-3" },
+            { id: 20, text: "ゲームを開始するジャンプボールのトスで、ボールがクルーチーフの手を離れジャンパーがボールをタップする前に、ジャンパーのB１がA１にパーソナルファウルをした。第１クォーターは始められている。したがって、これは第１クォーターの最中でのファウル

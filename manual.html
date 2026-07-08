@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JBA競技規則2026 アプリ 取扱説明書</title>
+<style>
+/* ====== 基盤 ====== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:    #1a1a2e;
+  --navy2:   #16213e;
+  --blue:    #0f3460;
+  --orange:  #e94560;
+  --orange2: #f5a623;
+  --ball:    #e8580c;
+  --bg:      #f5f6fa;
+  --card:    #ffffff;
+  --text1:   #1a1a2e;
+  --text2:   #4a5568;
+  --text3:   #718096;
+  --border:  #e2e8f0;
+  --green:   #027a48;
+  --purple:  #6941c6;
+  --screen-bg: #1a2233;
+  --screen-hd: #2d3a52;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text1);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ====== ヘッダー ====== */
+.page-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(233,69,96,.15);
+  pointer-events: none;
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 36px;
+  position: relative;
+}
+.header-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--orange2);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+.header-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,.65);
+  max-width: 480px;
+}
+.header-badge {
+  display: inline-block;
+  background: var(--orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+/* ====== 目次 ====== */
+.toc-bar {
+  background: var(--navy2);
+  border-bottom: 2px solid var(--orange);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.toc-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+}
+.toc-link {
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 12px 14px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+  display: block;
+}
+.toc-link:hover { color: #fff; border-color: var(--orange2); }
+
+/* ====== メインコンテンツ ====== */
+.main { max-width: 900px; margin: 0 auto; padding: 32px 16px 80px; }
+
+/* ====== セクション ====== */
+.section { margin-bottom: 56px; }
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 24px;
+  max-width: 600px;
+  line-height: 1.75;
+}
+.divider {
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+/* ====== ステップカード ====== */
+.steps { display: flex; flex-direction: column; gap: 16px; }
+.step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: start;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.step-num {
+  width: 42px; height: 42px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+.step h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.step p { font-size: 13px; color: var(--text2); line-height: 1.75; }
+
+/* ====== スマホモック ====== */
+.phone-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin: 24px 0;
+}
+.phone-wrap { flex: 1; min-width: 200px; max-width: 260px; }
+.phone-label {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+.phone {
+  background: var(--screen-bg);
+  border-radius: 28px;
+  padding: 12px;
+  border: 3px solid #2d3748;
+  box-shadow: 0 8px 32px rgba(0,0,0,.25);
+  position: relative;
+}
+.phone-notch {
+  width: 56px; height: 10px;
+  background: #111;
+  border-radius: 5px;
+  margin: 0 auto 8px;
+}
+.phone-screen {
+  background: #f5f6fa;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 360px;
+}
+.ps-hdr {
+  background: var(--navy);
+  padding: 10px 14px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ps-hdr-title { color: #fff; font-size: 12px; font-weight: 700; flex: 1; }
+.ps-hdr-icon { font-size: 16px; }
+.ps-body { padding: 10px 12px; }
+.ps-nav {
+  display: flex;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+  padding: 6px 0 2px;
+}
+.ps-nav-item {
+  flex: 1;
+  text-align: center;
+  font-size: 8px;
+  color: #98a2b3;
+  padding: 2px 0;
+  line-height: 1.4;
+}
+.ps-nav-item .ni { font-size: 14px; display: block; margin-bottom: 2px; }
+.ps-nav-item.active { color: var(--orange); }
+
+/* ====== 画面モック部品 ====== */
+.mock-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.mock-card-sm {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 10px;
+  color: #344054;
+  font-weight: 600;
+}
+.mock-tag {
+  display: inline-block;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-right: 4px;
+}
+.mock-tag.blue { background: #eff4ff; color: #3b5bdb; }
+.mock-tag.green { background: #f0fdf4; color: #027a48; }
+.mock-tag.purple { background: #f4f0ff; color: #6941c6; }
+.mock-tag.orange { background: #fff7ed; color: #c4420a; }
+.mock-tag.amber { background: #fef3c7; color: #92400e; }
+.mock-btn {
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
+  display: block;
+  margin-top: 6px;
+}
+.mock-btn.green { background: #027a48; }
+.mock-btn.orange { background: #e94560; }
+.mock-btn.outline {
+  background: transparent;
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+}
+.mock-q {
+  font-size: 10px;
+  color: #344054;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.mock-ans {
+  font-size: 9px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1.5px solid #e2e8f0;
+  color: #344054;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mock-ans.correct { border-color: #027a48; background: #f0fdf4; color: #027a48; font-weight: 700; }
+.mock-ans.wrong { border-color: #d92d20; background: #fef3f2; color: #d92d20; }
+.mock-mode-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.mock-mode {
+  font-size: 8px;
+  padding: 3px 7px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #667085;
+  font-weight: 600;
+}
+.mock-mode.active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+.mock-stat { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.mock-stat-label { font-size: 9px; color: #667085; }
+.mock-stat-val { font-size: 11px; font-weight: 800; color: #1a1a2e; }
+.mock-prog-bar { height: 5px; background: #e2e8f0; border-radius: 3px; margin-bottom: 6px; overflow: hidden; }
+.mock-prog-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #3b5bdb, #6941c6); }
+.mock-rule-section { font-size: 9px; font-weight: 700; color: #6941c6; margin-bottom: 4px; }
+.mock-rule-body {
+  font-size: 9px;
+  color: #344054;
+  line-height: 1.7;
+  background: #f8f9fc;
+  border-radius: 6px;
+  padding: 6px 8px;
+  border-left: 2px solid #6941c6;
+  margin-bottom: 6px;
+}
+.mock-rsw { display: flex; gap: 3px; margin-bottom: 8px; }
+.mock-rsw-btn {
+  flex: 1; font-size: 7px; font-weight: 700;
+  padding: 4px 2px; border-radius: 6px;
+  text-align: center; color: #667085;
+  background: #f8fafc; border: 1px solid #e2e8f0;
+}
+.mock-rsw-btn.active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+.mock-rf-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+.mock-rf-title { font-size: 9px; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; }
+.mock-rf-sub { font-size: 8px; color: #667085; }
+.mock-badge-row { display: flex; gap: 4px; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
+.mock-focus { font-size: 8px; color: #f79009; font-weight: 700; }
+.mock-sep { height: 1px; background: #f0f0f0; margin: 6px 0; }
+.mock-score {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px;
+  color: #667085;
+  margin-bottom: 3px;
+}
+.mock-score-val { font-weight: 800; font-size: 11px; color: #027a48; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 4px; }
+.cal-day { font-size: 7px; text-align: center; padding: 2px; color: #667085; font-weight: 600; }
+.cal-cell {
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  color: #344054;
+  background: #f8fafc;
+  position: relative;
+}
+.cal-cell.has-study { background: #eff4ff; color: #3b5bdb; font-weight: 700; }
+.cal-cell.has-game { background: #fff7ed; color: #c4420a; font-weight: 700; }
+.cal-cell.today { border: 1.5px solid #e94560; }
+.cal-dot { width: 4px; height: 4px; background: #e94560; border-radius: 50%; position: absolute; bottom: 1px; right: 2px; }
+
+/* ====== 説明テキストエリア ====== */
+.desc-block {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+}
+.desc-block h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.desc-block p, .desc-block li {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.8;
+}
+.desc-block ul { padding-left: 20px; }
+.desc-block li { margin-bottom: 3px; }
+
+/* ====== 2カラム ====== */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ====== ユーザー別バナー ====== */
+.user-banner {
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.user-banner.player { background: linear-gradient(135deg, #eff4ff 0%, #f4f0ff 100%); border: 1.5px solid #c7d7fd; }
+.user-banner.referee { background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%); border: 1.5px solid #fdb98a; }
+.user-icon { font-size: 40px; flex-shrink: 0; }
+.user-banner h3 { font-size: 17px; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+.user-banner p { font-size: 12px; color: var(--text2); line-height: 1.7; }
+
+/* ====== チップ ====== */
+.chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 2px;
+}
+.chip.b { background: #eff4ff; color: #3b5bdb; }
+.chip.g { background: #f0fdf4; color: #027a48; }
+.chip.o { background: #fff7ed; color: #c4420a; }
+.chip.p { background: #f4f0ff; color: #6941c6; }
+.chip.r { background: #fef3f2; color: #d92d20; }
+
+/* ====== ヒントボックス ====== */
+.hint {
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 12px;
+  color: #92400e;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.7;
+}
+.hint-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ====== フロー ====== */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.flow-node {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.flow-arrow { color: var(--text3); font-size: 16px; }
+
+/* ====== フッター ====== */
+.page-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.5);
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+}
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-label">取扱説明書 — User Guide</div>
+    <div class="header-title">🏀 JBA競技規則2026<br>学習アプリ 使い方ガイド</div>
+    <div style="margin:12px 0 0">
+      <span class="header-badge">プレーヤー・保護者向け</span>
+      <span class="header-badge">審判活動者向け</span>
+    </div>
+    <div class="header-sub" style="margin-top:12px">2026年度版 JBA競技規則・インタープリテーション・プレーコーリングガイドラインに完全対応した、スマートフォン対応の学習PWAアプリです。</div>
+  </div>
+</div>
+
+<!-- 目次バー -->
+<div class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#overview">アプリ概要</a>
+    <a class="toc-link" href="#player">① プレーヤー・保護者向け</a>
+    <a class="toc-link" href="#referee">② 審判活動者向け</a>
+    <a class="toc-link" href="#tabs">全タブ解説</a>
+    <a class="toc-link" href="#tips">活用ヒント</a>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== アプリ概要 ===== -->
+<div class="section" id="overview">
+  <div class="section-label">App Overview</div>
+  <div class="section-title">このアプリでできること</div>
+  <div class="divider"></div>
+
+  <div class="two-col">
+    <div class="desc-block">
+      <h4>🎯 学習機能</h4>
+      <ul>
+        <li>JBA競技規則 全175問 ○×テスト</li>
+        <li>6種類の学習モード</li>
+        <li>デイリーチャレンジ（毎日5問）</li>
+        <li>SRS（間隔反復）学習</li>
+        <li>小テスト25問の実力確認</li>
+      </ul>
+    </div>
+    <div class="desc-block">
+      <h4>📖 参照機能</h4>
+      <ul>
+        <li>競技規則原本（第1〜50条）</li>
+        <li>インタープリテーション（490項目）</li>
+        <li>プレーコーリング・ガイドライン</li>
+        <li>全文検索・苦手フラグ・確認回数記録</li>
+      </ul>
+    </div>
+    <div class="desc-block">
+      <h4>📊 分析機能</h4>
+      <ul>
+        <li>難易度A〜D別 正答率レーダー</li>
+        <li>小テスト25問 推移グラフ</li>
+        <li>要注意問題ピックアップ</li>
+        <li>条文別出題数・目標管理</li>
+      </ul>
+    </div>
+    <div class="desc-block">
+      <h4>🏀 審判ノート</h4>
+      <ul>
+        <li>Refereeノート（条文別メモ）</li>
+        <li>重点目標の作成・引き継ぎ</li>
+        <li>試合記録・振り返り</li>
+        <li>審判カレンダー</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ナビゲーション全体像 -->
+  <div class="desc-block" style="margin-top:20px">
+    <h4>📱 6つのタブ（画面下部に常時表示）</h4>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">🃏</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">学習</div>
+        <div style="font-size:10px;color:#667085">テスト問題</div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">📋</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">一覧</div>
+        <div style="font-size:10px;color:#667085">全問題検索</div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">📖</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">競技規則</div>
+        <div style="font-size:10px;color:#667085">原本参照</div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">📝</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">メモ</div>
+        <div style="font-size:10px;color:#667085">自由メモ帳</div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">🏀</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">審判</div>
+        <div style="font-size:10px;color:#667085">ノート・記録</div>
+      </div>
+      <div style="text-align:center;min-width:70px">
+        <div style="font-size:28px">📊</div>
+        <div style="font-size:11px;font-weight:700;color:#1a1a2e">記録</div>
+        <div style="font-size:10px;color:#667085">成績分析</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ① プレーヤー・保護者向け ===== -->
+<div class="section" id="player">
+  <div class="section-label">For Players & Parents</div>
+  <div class="section-title">① プレーヤー・保護者の方向け</div>
+  <div class="divider"></div>
+
+  <div class="user-banner player">
+    <div class="user-icon">⛹️</div>
+    <div>
+      <h3>ルールをゲーム感覚で学ぶ</h3>
+      <p>「なぜファウルを取られたの？」「その判定はルール上どうなの？」<br>
+      ○×形式のクイズと競技規則原本を組み合わせて、楽しくルールを習得できます。</p>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:8px">STEP 1</div>
+  <div class="section-title" style="font-size:18px">毎日5問チャレンジからはじめよう</div>
+  <div class="section-desc">まずは「デイリーチャレンジ」で毎日5問だけ解きましょう。習慣が積み上がり、自然とルールへの理解が深まります。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">ホーム画面</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-title">🏀 JBA競技規則2026</div>
+          </div>
+          <div class="ps-body">
+            <div style="font-size:9px;font-weight:700;color:#667085;margin-bottom:8px">🎯 今日からはじめよう</div>
+            <!-- デイリーカード -->
+            <div class="mock-card" style="border-left:3px solid #f59e0b;cursor:pointer">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                <span style="font-size:16px">🎯</span>
+                <span style="font-size:11px;font-weight:800;color:#1a1a2e">デイリーチャレンジ</span>
+              </div>
+              <div style="font-size:9px;color:#667085">5問 今日のチャレンジ</div>
+              <div style="margin-top:6px;background:#f5f6fa;border-radius:6px;padding:5px 8px">
+                <div style="font-size:8px;color:#667085">今日の進捗</div>
+                <div class="mock-prog-bar" style="margin:3px 0 0">
+                  <div class="mock-prog-fill" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+            <!-- 学習カード -->
+            <div class="mock-card" style="cursor:pointer">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                <span style="font-size:16px">📝</span>
+                <span style="font-size:11px;font-weight:800;color:#1a1a2e">テスト学習</span>
+              </div>
+              <div style="font-size:9px;color:#667085">175問 ○×テスト</div>
+            </div>
+            <div style="margin-top:6px">
+              <div style="font-size:9px;font-weight:700;color:#667085;margin-bottom:5px">📖 参照・記録</div>
+              <div style="display:flex;gap:6px">
+                <div class="mock-card" style="flex:1;padding:8px;text-align:center">
+                  <div style="font-size:18px">📖</div>
+                  <div style="font-size:8px;font-weight:700;color:#344054;margin-top:2px">競技規則</div>
+                </div>
+                <div class="mock-card" style="flex:1;padding:8px;text-align:center">
+                  <div style="font-size:18px">🏀</div>
+                  <div style="font-size:8px;font-weight:700;color:#344054;margin-top:2px">審判ノート</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-label">デイリーチャレンジ画面</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">🎯</div>
+            <div class="ps-hdr-title">デイリーチャレンジ</div>
+          </div>
+          <div class="ps-body">
+            <div style="text-align:center;padding:6px 0 8px">
+              <div style="font-size:9px;color:#667085">7月8日（火）</div>
+              <div style="font-size:9px;color:#667085;margin-top:4px">問1 / 5</div>
+              <div class="mock-prog-bar" style="margin:4px 0">
+                <div class="mock-prog-fill" style="width:20%"></div>
+              </div>
+            </div>
+            <div class="mock-card" style="border-left:3px solid #3b5bdb">
+              <div style="font-size:9px;font-weight:700;color:#3b5bdb;margin-bottom:4px">第4条 チーム</div>
+              <div class="mock-q">プレーのインターバル中は、プレーをする資格があるチームメンバーは全てプレーヤーであるとみなされる。</div>
+              <div class="mock-ans correct">◎ 正しい（○）</div>
+              <div class="mock-ans">✕ 誤り（×）</div>
+            </div>
+            <div style="font-size:9px;color:#667085;text-align:center;margin-top:4px">タップして回答しよう</div>
+          </div>
+          <div class="ps-nav">
+            <div class="ps-nav-item active"><span class="ni">🃏</span>学習</div>
+            <div class="ps-nav-item"><span class="ni">📋</span>一覧</div>
+            <div class="ps-nav-item"><span class="ni">📖</span>規則</div>
+            <div class="ps-nav-item"><span class="ni">📝</span>メモ</div>
+            <div class="ps-nav-item"><span class="ni">🏀</span>審判</div>
+            <div class="ps-nav-item"><span class="ni">📊</span>記録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-label">正解後の解説表示</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">🎯</div>
+            <div class="ps-hdr-title">デイリーチャレンジ</div>
+          </div>
+          <div class="ps-body">
+            <div class="mock-card" style="border-left:3px solid #027a48">
+              <div style="font-size:9px;font-weight:700;color:#3b5bdb;margin-bottom:4px">第4条 チーム</div>
+              <div class="mock-q">プレーのインターバル中は、プレーをする資格があるチームメンバーは全てプレーヤーであるとみなされる。</div>
+              <div class="mock-ans correct">◎ 正しい — あなたの回答 ✅</div>
+            </div>
+            <!-- 解説 -->
+            <div class="mock-card" style="background:#f0fdf4;border-color:#bbf7d0">
+              <div style="font-size:9px;font-weight:700;color:#027a48;margin-bottom:4px">💡 解説</div>
+              <div style="font-size:9px;color:#344054;line-height:1.6">問題文のとおり。プレーのインターバル中は資格あるチームメンバー全員がプレーヤーとみなされる。</div>
+            </div>
+            <div class="mock-card" style="background:#f8f9fc">
+              <div style="font-size:9px;font-weight:700;color:#6941c6;margin-bottom:4px">📘 根拠条文</div>
+              <div style="font-size:8px;color:#344054;line-height:1.6">第4条 4-1-4...</div>
+            </div>
+            <div class="mock-btn green" style="margin-top:6px">次の問題へ →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">STEP 2</div>
+  <div class="section-title" style="font-size:18px">気になったルールを原本で確認</div>
+  <div class="section-desc">テスト後に「この条文はどこに書いてあるの？」と思ったら、「競技規則」タブで原本を確認できます。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">競技規則タブ</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">📖</div>
+            <div class="ps-hdr-title">競技規則原本</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.6)">2026年度版</div>
+          </div>
+          <div class="ps-body">
+            <!-- 切替ボタン -->
+            <div class="mock-rsw">
+              <div class="mock-rsw-btn active">競技規則</div>
+              <div class="mock-rsw-btn">インプリ</div>
+              <div class="mock-rsw-btn" style="font-size:6px">ガイドライン</div>
+            </div>
+            <!-- 検索 -->
+            <div style="background:#f0f4ff;border-radius:8px;padding:6px 10px;font-size:9px;color:#98a2b3;margin-bottom:8px">🔍 条文を検索…</div>
+            <!-- 条文カード -->
+            <div class="mock-card">
+              <div class="mock-rule-section">第4条　チーム</div>
+              <div style="font-size:9px;font-weight:600;color:#344054;margin-bottom:3px">4-1-4</div>
+              <div class="mock-rule-body">プレーのインターバル中は、プレーをする資格があるチームメンバーは全てプレーヤーであるとみなされる。</div>
+              <div style="display:flex;gap:4px">
+                <div style="font-size:8px;padding:3px 7px;background:#f0fdf4;color:#027a48;border-radius:6px;font-weight:700">✓ 確認 0回</div>
+                <div style="font-size:8px;padding:3px 7px;background:#f8f9fc;color:#667085;border-radius:6px">📝 メモ追加</div>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-rule-section">第4条　チーム</div>
+              <div style="font-size:9px;font-weight:600;color:#344054;margin-bottom:3px">4-3-2</div>
+              <div class="mock-rule-body">番号は0、00および1から99のいずれかを用いる…</div>
+              <div style="font-size:8px;color:#98a2b3">タップで全文展開</div>
+            </div>
+          </div>
+          <div class="ps-nav">
+            <div class="ps-nav-item"><span class="ni">🃏</span>学習</div>
+            <div class="ps-nav-item"><span class="ni">📋</span>一覧</div>
+            <div class="ps-nav-item active"><span class="ni">📖</span>規則</div>
+            <div class="ps-nav-item"><span class="ni">📝</span>メモ</div>
+            <div class="ps-nav-item"><span class="ni">🏀</span>審判</div>
+            <div class="ps-nav-item"><span class="ni">📊</span>記録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:2;min-width:220px">
+      <div class="desc-block">
+        <h4>📖 競技規則タブの3つの参照モード</h4>
+        <div style="margin-top:10px">
+          <div style="padding:8px 12px;border-left:3px solid #6941c6;margin-bottom:8px;background:#f9f5ff;border-radius:0 8px 8px 0">
+            <div style="font-size:12px;font-weight:700;color:#6941c6">競技規則（第1〜50条）</div>
+            <div style="font-size:12px;color:#344054;margin-top:2px">JBAルールブックの条文そのもの。「第○条 ○-○」形式で引ける。</div>
+          </div>
+          <div style="padding:8px 12px;border-left:3px solid #9d174d;margin-bottom:8px;background:#fdf2f8;border-radius:0 8px 8px 0">
+            <div style="font-size:12px;font-weight:700;color:#9d174d">インタープリテーション</div>
+            <div style="font-size:12px;color:#344054;margin-top:2px">各条文の補足解説・490項目。テストに直結する詳細解釈が載っている。</div>
+          </div>
+          <div style="padding:8px 12px;border-left:3px solid #92400e;background:#fffbeb;border-radius:0 8px 8px 0">
+            <div style="font-size:12px;font-weight:700;color:#92400e">🎯 プレーコーリング・ガイドライン</div>
+            <div style="font-size:12px;color:#344054;margin-top:2px">審判が現場でどう判定するかを解説した実践ガイド。PDF図表も表示。</div>
+          </div>
+        </div>
+      </div>
+      <div class="hint">
+        <div class="hint-icon">💡</div>
+        <div>各条文カードをタップすると全文が展開します。「✓ 確認した」ボタンを押すと読んだ回数が記録され、自分がどの条文を何度確認したか把握できます。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">STEP 3</div>
+  <div class="section-title" style="font-size:18px">自分の弱点を確認して追加学習</div>
+  <div class="section-desc">「記録」タブで正答率をチェックし、苦手な条文に絞って復習します。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">記録タブ（分析）</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">📊</div>
+            <div class="ps-hdr-title">学習記録</div>
+          </div>
+          <div class="ps-body">
+            <div class="mock-mode-row">
+              <div class="mock-mode">🎯 難易度別</div>
+              <div class="mock-mode">📈 推移</div>
+              <div class="mock-mode active">⚠️ 要注意</div>
+              <div class="mock-mode">📅 カレンダー</div>
+            </div>
+            <div class="mock-card" style="border-left:3px solid #d92d20">
+              <div style="font-size:9px;font-weight:700;color:#d92d20;margin-bottom:6px">⚠️ 3回以上間違えた問題</div>
+              <div class="mock-ans wrong" style="margin-bottom:4px">No.47 第10条 ファウル（正答率 33%）</div>
+              <div class="mock-ans wrong" style="margin-bottom:4px">No.83 第14条 ゲームクロック（25%）</div>
+              <div class="mock-ans wrong">No.112 第26条 チャージング（29%）</div>
+            </div>
+            <div class="mock-card">
+              <div style="font-size:9px;font-weight:700;color:#344054;margin-bottom:4px">📈 小テスト25問 推移</div>
+              <div style="display:flex;align-items:flex-end;gap:3px;height:40px;padding:0 4px">
+                <div style="flex:1;background:#c7d7fd;border-radius:2px 2px 0 0;height:50%"></div>
+                <div style="flex:1;background:#c7d7fd;border-radius:2px 2px 0 0;height:60%"></div>
+                <div style="flex:1;background:#c7d7fd;border-radius:2px 2px 0 0;height:72%"></div>
+                <div style="flex:1;background:#3b5bdb;border-radius:2px 2px 0 0;height:80%"></div>
+              </div>
+              <div style="font-size:8px;color:#667085;text-align:right;margin-top:3px">最新：80%</div>
+            </div>
+          </div>
+          <div class="ps-nav">
+            <div class="ps-nav-item"><span class="ni">🃏</span>学習</div>
+            <div class="ps-nav-item"><span class="ni">📋</span>一覧</div>
+            <div class="ps-nav-item"><span class="ni">📖</span>規則</div>
+            <div class="ps-nav-item"><span class="ni">📝</span>メモ</div>
+            <div class="ps-nav-item"><span class="ni">🏀</span>審判</div>
+            <div class="ps-nav-item active"><span class="ni">📊</span>記録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:2;min-width:220px">
+      <div class="desc-block">
+        <h4>プレーヤー・保護者の方が使う主な機能</h4>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <div style="font-size:18px;flex-shrink:0">📋</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">一覧タブで全問を見渡す</div>
+              <div style="font-size:12px;color:#667085">全175問をスクロールで確認。問題をタップすると問題文・解説・根拠条文が展開します。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <div style="font-size:18px;flex-shrink:0">🃏</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">苦手モードで集中復習</div>
+              <div style="font-size:12px;color:#667085">学習タブの「苦手」モードを選ぶと、正答率50%以下の問題だけが出題されます。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <div style="font-size:18px;flex-shrink:0">🔁</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">SRS学習（間隔反復法）</div>
+              <div style="font-size:12px;color:#667085">正解するほど次の出題間隔が延びる科学的学習法。効率よく長期記憶に定着させます。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <div style="font-size:18px;flex-shrink:0">📝</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">メモタブで気づきを保存</div>
+              <div style="font-size:12px;color:#667085">「ここ大事！」と思ったことを自由なメモ帳に記録。条文リンクも作れます。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ② 審判活動者向け ===== -->
+<div class="section" id="referee">
+  <div class="section-label">For Referees</div>
+  <div class="section-title">② 審判活動者の方向け</div>
+  <div class="divider"></div>
+
+  <div class="user-banner referee">
+    <div class="user-icon">🦺</div>
+    <div>
+      <h3>試合前〜試合後を一貫して管理</h3>
+      <p>学習・条文参照から、審判ノートへの記録、試合記録・振り返りまで。<br>
+      審判活動のPDCAを1つのアプリで完結できます。</p>
+    </div>
+  </div>
+
+  <!-- フロー -->
+  <div class="desc-block">
+    <h4>📅 審判活動のサイクル</h4>
+    <div style="margin-top:12px">
+      <div class="flow">
+        <div class="flow-node" style="background:#3b5bdb">🃏 ルール学習</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#6941c6">📌 Refereeノート</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#f79009;color:#1a1a2e">🎯 重点目標設定</div>
+      </div>
+      <div class="flow" style="margin-top:8px">
+        <div class="flow-node" style="background:#e94560">📋 試合記録作成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#027a48">✅ 振り返り入力</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#3b5bdb">⭐ 次回重点に設定</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#6941c6">📌 次の試合へ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">STEP 1</div>
+  <div class="section-title" style="font-size:18px">Refereeノートで条文への気づきをメモ</div>
+  <div class="section-desc">条文・インプリ・テスト問題を読んで気になった項目を「Refereeノート」に追加。審判メモと試合後の振り返りを一緒に管理できます。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">Refereeノート一覧</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">🏀</div>
+            <div class="ps-hdr-title">審判ノート</div>
+          </div>
+          <div class="ps-body">
+            <div class="mock-rsw">
+              <div class="mock-rsw-btn active">📌 ノート</div>
+              <div class="mock-rsw-btn">🎯 目標</div>
+              <div class="mock-rsw-btn">📋 試合</div>
+              <div class="mock-rsw-btn">📅 カレンダー</div>
+            </div>
+            <!-- フィルター -->
+            <div style="display:flex;gap:4px;margin-bottom:8px">
+              <div style="font-size:8px;padding:3px 7px;background:#1a1a2e;color:#fff;border-radius:10px;font-weight:700">すべて</div>
+              <div style="font-size:8px;padding:3px 7px;background:#f8fafc;color:#667085;border-radius:10px;border:1px solid #e2e8f0">⭐ 重点</div>
+              <div style="font-size:8px;padding:3px 7px;background:#f8fafc;color:#667085;border-radius:10px;border:1px solid #e2e8f0">競技規則</div>
+              <div style="font-size:8px;padding:3px 7px;background:#f8fafc;color:#667085;border-radius:10px;border:1px solid #e2e8f0">インプリ</div>
+            </div>
+            <!-- ノートカード -->
+            <div class="mock-rf-card">
+              <div class="mock-badge-row">
+                <span class="mock-tag blue">競技規則</span>
+                <span class="mock-focus">⭐ 次回重点</span>
+              </div>
+              <div class="mock-rf-title">第36条 36-1 ブロッキング</div>
+              <div class="mock-rf-sub">📝 記録あり ▸</div>
+            </div>
+            <div class="mock-rf-card">
+              <div class="mock-badge-row">
+                <span class="mock-tag purple">インプリ</span>
+              </div>
+              <div class="mock-rf-title">36-1 ブロッキング（インプリ）</div>
+              <div class="mock-rf-sub">▸</div>
+            </div>
+            <div class="mock-rf-card">
+              <div class="mock-badge-row">
+                <span class="mock-tag green">テスト</span>
+              </div>
+              <div class="mock-rf-title">No.112 第26条 チャージング</div>
+              <div class="mock-rf-sub">📝 記録あり ▸</div>
+            </div>
+          </div>
+          <div class="ps-nav">
+            <div class="ps-nav-item"><span class="ni">🃏</span>学習</div>
+            <div class="ps-nav-item"><span class="ni">📋</span>一覧</div>
+            <div class="ps-nav-item"><span class="ni">📖</span>規則</div>
+            <div class="ps-nav-item"><span class="ni">📝</span>メモ</div>
+            <div class="ps-nav-item active"><span class="ni">🏀</span>審判</div>
+            <div class="ps-nav-item"><span class="ni">📊</span>記録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-label">ノートを開いた状態</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">🏀</div>
+            <div class="ps-hdr-title">Refereeノート詳細</div>
+          </div>
+          <div class="ps-body" style="font-size:9px">
+            <div class="mock-rf-card" style="border-top:3px solid #3b5bdb">
+              <div class="mock-badge-row">
+                <span class="mock-tag blue">競技規則</span>
+                <span class="mock-focus">⭐ 次回重点</span>
+              </div>
+              <div style="font-size:10px;font-weight:800;color:#1a1a2e;margin:4px 0">第36条 36-1 ブロッキング</div>
+            </div>
+            <!-- 条文表示 -->
+            <div style="background:#f4f0ff;border-radius:8px;padding:7px 9px;margin-bottom:7px;border-left:2px solid #6941c6">
+              <div style="font-size:8px;font-weight:700;color:#6941c6;margin-bottom:3px">📖 条文内容</div>
+              <div style="font-size:8px;color:#344054;line-height:1.6">ボールを持っていてもいなくても、オフェンスのFOBを妨げるイリーガルな体でのコンタクト…</div>
+            </div>
+            <!-- メモ欄 -->
+            <div style="font-size:8px;font-weight:700;color:#667085;margin-bottom:3px">📝 審判メモ</div>
+            <div style="background:#f8fafc;border-radius:6px;padding:6px 8px;font-size:8px;color:#344054;min-height:36px;border:1px solid #e2e8f0;margin-bottom:6px">LGPを確立する前にコンタクト→ブロッキング。タイミングが重要。</div>
+            <!-- 振り返り -->
+            <div style="font-size:8px;font-weight:700;color:#027a48;margin-bottom:3px">✅ 試合後の振り返り</div>
+            <div style="background:#f0fdf4;border-radius:6px;padding:6px 8px;font-size:8px;color:#344054;min-height:28px;border:1px solid #bbf7d0">未記入</div>
+            <div style="display:flex;gap:4px;margin-top:6px">
+              <div style="flex:1;background:#1a1a2e;color:#fff;border-radius:6px;padding:4px 0;font-size:8px;text-align:center;font-weight:700">💾 保存</div>
+              <div style="background:#fef3f2;color:#d92d20;border-radius:6px;padding:4px 8px;font-size:8px;text-align:center">🗑</div>
+              <div style="background:#eff4ff;color:#3b5bdb;border-radius:6px;padding:4px 7px;font-size:8px;font-weight:700">📖 条文</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:2;min-width:200px">
+      <div class="desc-block">
+        <h4>Refereeノートへの追加方法</h4>
+        <div class="steps" style="gap:10px;margin-top:10px">
+          <div class="step" style="grid-template-columns:36px 1fr;padding:12px">
+            <div class="step-num" style="width:30px;height:30px;font-size:14px">A</div>
+            <div>
+              <h4 style="font-size:12px">競技規則タブから</h4>
+              <p style="font-size:11px">条文カードの下の「🏀 Refereeノートに追加」ボタンをタップ</p>
+            </div>
+          </div>
+          <div class="step" style="grid-template-columns:36px 1fr;padding:12px">
+            <div class="step-num" style="width:30px;height:30px;font-size:14px">B</div>
+            <div>
+              <h4 style="font-size:12px">テスト問題から</h4>
+              <p style="font-size:11px">問題・解説を見た後「🏀 Refereeノートに追加」で問題文ごと保存</p>
+            </div>
+          </div>
+          <div class="step" style="grid-template-columns:36px 1fr;padding:12px">
+            <div class="step-num" style="width:30px;height:30px;font-size:14px">C</div>
+            <div>
+              <h4 style="font-size:12px">⭐ 次回重点をONに</h4>
+              <p style="font-size:11px">「次の試合で意識したい」項目は⭐ボタンをONにすると、試合記録の目標欄に自動で引き継がれます</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">STEP 2</div>
+  <div class="section-title" style="font-size:18px">試合記録で振り返りを習慣化</div>
+  <div class="section-desc">試合前に重点目標を設定し、試合後に振り返りを記入。次の試合の「⭐ 次回重点」に自動で引き継がれます。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">試合記録作成</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">📋</div>
+            <div class="ps-hdr-title">試合記録</div>
+          </div>
+          <div class="ps-body" style="font-size:9px">
+            <div style="background:#fff7ed;border:1px solid #fde68a;border-radius:8px;padding:6px 8px;margin-bottom:8px;font-size:8px;color:#92400e">
+              💡 Refereeノートで「⭐ 次回重点」にした項目は自動的に下の「重点目標」に引き継がれます
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:8px;font-weight:700;color:#344054;min-width:42px">試合日</div>
+                <div style="flex:1;background:#f0f4ff;border-radius:5px;padding:4px 8px;font-size:8px;color:#3b5bdb">2026/07/19</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:8px;font-weight:700;color:#344054;min-width:42px">担当</div>
+                <div style="flex:1;background:#f8fafc;border-radius:5px;padding:4px 8px;font-size:8px;color:#344054">クルーチーフ</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="font-size:8px;font-weight:700;color:#344054;min-width:42px">対戦</div>
+                <div style="flex:1;background:#f8fafc;border-radius:5px;padding:4px 8px;font-size:8px;color:#98a2b3">チーム名・大会名…</div>
+              </div>
+            </div>
+            <!-- 重点目標 -->
+            <div style="font-size:8px;font-weight:700;color:#344054;margin:8px 0 4px">🔗 前回からの引き継ぎ内容</div>
+            <div style="background:#f0fdf4;border-radius:6px;padding:6px 8px;margin-bottom:4px">
+              <div style="font-size:8px;font-weight:700;color:#027a48;margin-bottom:3px">⭐ 次回重点（自動引き継ぎ）</div>
+              <div style="font-size:8px;color:#344054">・第36条 ブロッキング LGP確認</div>
+              <div style="font-size:7px;color:#027a48;margin-top:3px cursor:pointer">＋ 目標欄に追加</div>
+            </div>
+            <div style="font-size:8px;font-weight:700;color:#344054;margin:6px 0 3px">🎯 重点目標</div>
+            <div style="background:#f8fafc;border-radius:6px;padding:6px 8px;font-size:8px;color:#98a2b3;min-height:30px;border:1px solid #e2e8f0">入力するか上の「＋目標欄に追加」で転記…</div>
+            <div class="mock-btn" style="margin-top:8px;font-size:9px">📋 試合記録を登録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-label">試合後の振り返り</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">📋</div>
+            <div class="ps-hdr-title">試合記録 — 振り返り</div>
+          </div>
+          <div class="ps-body" style="font-size:9px">
+            <!-- ゲームカード -->
+            <div class="mock-card" style="border-left:3px solid #027a48">
+              <div class="mock-stat">
+                <div>
+                  <div style="font-size:10px;font-weight:800;color:#1a1a2e">2026/07/19 高松練成会</div>
+                  <div style="font-size:8px;color:#667085">クルーチーフ ✅ 完了</div>
+                </div>
+                <div class="mock-score-val">78-62</div>
+              </div>
+            </div>
+            <div style="font-size:8px;font-weight:700;color:#344054;margin-bottom:3px">🎯 重点目標（試合前）</div>
+            <div style="font-size:8px;background:#f0fdf4;border-radius:6px;padding:5px 8px;color:#344054;margin-bottom:6px">・第36条 ブロッキング LGP確認</div>
+            <div style="font-size:8px;font-weight:700;color:#027a48;margin-bottom:3px">✅ 試合後の振り返り</div>
+            <div style="font-size:8px;background:#f0fdf4;border-radius:6px;padding:5px 8px;color:#344054;min-height:28px;margin-bottom:6px;border:1px solid #bbf7d0">1Q終盤のドライブシーンでLGPの確認が遅れた。次回はもっと早く判断する。</div>
+            <div style="font-size:8px;font-weight:700;color:#f79009;margin-bottom:3px">⭐ 次回への引き継ぎ</div>
+            <div style="font-size:8px;background:#fffbeb;border-radius:6px;padding:5px 8px;color:#344054;min-height:24px;margin-bottom:6px;border:1px solid #fde68a">LGPの確立タイミングを早める</div>
+            <div class="mock-btn" style="font-size:9px">💾 保存</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-label">審判カレンダー</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">📅</div>
+            <div class="ps-hdr-title">審判カレンダー</div>
+          </div>
+          <div class="ps-body">
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#1a1a2e;margin-bottom:8px">2026年 7月</div>
+            <!-- 簡易カレンダー -->
+            <div class="cal-grid">
+              <div class="cal-day">日</div><div class="cal-day">月</div><div class="cal-day">火</div><div class="cal-day">水</div><div class="cal-day">木</div><div class="cal-day">金</div><div class="cal-day">土</div>
+              <div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell has-study">1<div class="cal-dot"></div></div><div class="cal-cell has-study">2</div><div class="cal-cell">3</div><div class="cal-cell">4</div><div class="cal-cell has-study">5</div>
+              <div class="cal-cell has-study">6</div><div class="cal-cell">7</div><div class="cal-cell today">8<div class="cal-dot"></div></div><div class="cal-cell">9</div><div class="cal-cell">10</div><div class="cal-cell">11</div><div class="cal-cell">12</div>
+              <div class="cal-cell">13</div><div class="cal-cell">14</div><div class="cal-cell">15</div><div class="cal-cell">16</div><div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell has-game">19</div>
+              <div class="cal-cell">20</div><div class="cal-cell">21</div><div class="cal-cell">22</div><div class="cal-cell">23</div><div class="cal-cell">24</div><div class="cal-cell">25</div><div class="cal-cell">26</div>
+            </div>
+            <!-- 凡例 -->
+            <div style="display:flex;gap:8px;margin:6px 0;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:3px"><div style="width:10px;height:10px;background:#eff4ff;border-radius:2px"></div><div style="font-size:7px;color:#667085">学習日</div></div>
+              <div style="display:flex;align-items:center;gap:3px"><div style="width:10px;height:10px;background:#fff7ed;border-radius:2px"></div><div style="font-size:7px;color:#667085">試合日</div></div>
+              <div style="display:flex;align-items:center;gap:3px"><div style="width:6px;height:6px;background:#e94560;border-radius:50%"></div><div style="font-size:7px;color:#667085">ノート記録あり</div></div>
+            </div>
+            <!-- 19日 -->
+            <div class="mock-card-sm">📋 7/19 高松練成会（タップで詳細）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:32px">STEP 3</div>
+  <div class="section-title" style="font-size:18px">審判ノート×テスト正答率で弱点を発見</div>
+  <div class="section-desc">「記録」タブの「🔗 審判ノート×テスト」では、Refereeノートに登録した条文のテスト正答率を一覧で確認できます。</div>
+
+  <div class="phone-row">
+    <div class="phone-wrap">
+      <div class="phone-label">審判ノート×テスト分析</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="ps-hdr">
+            <div class="ps-hdr-icon">🔗</div>
+            <div class="ps-hdr-title">審判ノート × テスト正答率</div>
+          </div>
+          <div class="ps-body">
+            <div style="font-size:9px;color:#667085;margin-bottom:6px">Refereeノートで登録した条文のテスト正答率</div>
+            <!-- 各行 -->
+            <div class="mock-card" style="padding:8px 10px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <span class="mock-tag blue" style="font-size:7px">競技規則</span>
+                  <div style="font-size:9px;font-weight:700;color:#1a1a2e;margin-top:2px">第36条 ブロッキング</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <div style="font-size:13px;font-weight:800;color:#d92d20">42%</div>
+                  <div style="font-size:10px;color:#98a2b3">▸</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-card" style="padding:8px 10px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <span class="mock-tag purple" style="font-size:7px">インプリ</span>
+                  <div style="font-size:9px;font-weight:700;color:#1a1a2e;margin-top:2px">36-1 ブロッキング</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <div style="font-size:13px;font-weight:800;color:#f79009">65%</div>
+                  <div style="font-size:10px;color:#98a2b3">▸</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-card" style="padding:8px 10px;cursor:pointer">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <span class="mock-tag green" style="font-size:7px">テスト</span>
+                  <div style="font-size:9px;font-weight:700;color:#1a1a2e;margin-top:2px">No.112 第26条 チャージング</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px">
+                  <div style="font-size:13px;font-weight:800;color:#d92d20">29%</div>
+                  <div style="font-size:10px;color:#98a2b3">▸</div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:8px;color:#667085;margin-top:8px;padding:6px 8px;background:#f8f9fc;border-radius:6px">👆 タップすると関連問題が展開し、その場で復習できます</div>
+          </div>
+          <div class="ps-nav">
+            <div class="ps-nav-item"><span class="ni">🃏</span>学習</div>
+            <div class="ps-nav-item"><span class="ni">📋</span>一覧</div>
+            <div class="ps-nav-item"><span class="ni">📖</span>規則</div>
+            <div class="ps-nav-item"><span class="ni">📝</span>メモ</div>
+            <div class="ps-nav-item"><span class="ni">🏀</span>審判</div>
+            <div class="ps-nav-item active"><span class="ni">📊</span>記録</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:2;min-width:220px">
+      <div class="desc-block">
+        <h4>🎯 審判活動者が特に活用すべき機能</h4>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:8px">
+            <div style="font-size:20px;flex-shrink:0">📌</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">条文別フィルター</div>
+              <div style="font-size:12px;color:#667085">Refereeノートの「ガイドライン」フィルターでプレーコーリングガイドライン登録分だけ表示できます</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="font-size:20px;flex-shrink:0">📖</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">「条文を見る」ボタン</div>
+              <div style="font-size:12px;color:#667085">ノート内から該当条文・テスト問題にワンタップでジャンプ可能</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="font-size:20px;flex-shrink:0">📅</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">カレンダーへの自動記録</div>
+              <div style="font-size:12px;color:#667085">ノート・重点目標を作成した日は審判カレンダーにも自動でマーク。継続を可視化できます</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="font-size:20px;flex-shrink:0">🔁</div>
+            <div>
+              <div style="font-size:13px;font-weight:700">目標の自動引き継ぎ</div>
+              <div style="font-size:12px;color:#667085">「⭐ 次回重点」にした条文が次の試合記録作成時に自動表示。「＋目標欄に追加」でそのまま転記できます</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 全タブ解説 ===== -->
+<div class="section" id="tabs">
+  <div class="section-label">Tab Guide</div>
+  <div class="section-title">全タブ機能リファレンス</div>
+  <div class="divider"></div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <!-- 学習タブ -->
+    <div class="desc-block">
+      <h4>🃏 学習タブ — テスト問題</h4>
+      <div style="margin-top:8px">
+        <div style="font-size:12px;font-weight:700;color:#344054;margin-bottom:6px">6つの学習モード</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="chip b">番号順</span>
+          <span class="chip b">シャッフル</span>
+          <span class="chip r">苦手</span>
+          <span class="chip p">🎯 小テスト25問</span>
+          <span class="chip p">🔁 SRS学習</span>
+          <span class="chip o">🎯 デイリー</span>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:#344054;line-height:1.8">
+          <b>番号順／シャッフル</b>：全175問を順番またはランダムで出題。<br>
+          <b>苦手モード</b>：正答率50%以下の問題に絞って出題。弱点集中克服に最適。<br>
+          <b>小テスト25問</b>：全条文からバランスよく25問を出題。スコアを記録して推移を確認。<br>
+          <b>SRS学習</b>：正解を重ねるほど次の出題間隔が延びる科学的学習法。<br>
+          <b>デイリー</b>：毎日5問チャレンジ。今日の達成状況を確認できる。
+        </div>
+      </div>
+    </div>
+
+    <!-- 一覧タブ -->
+    <div class="desc-block">
+      <h4>📋 一覧タブ — 全問題検索</h4>
+      <div style="font-size:12px;color:#344054;line-height:1.8;margin-top:6px">
+        全175問を条文番号・問題文で検索。各行をタップすると問題文・解説・根拠条文が展開。「📌 Refereeノートに追加」「📝 メモ追加」ボタンも使用可能。
+      </div>
+    </div>
+
+    <!-- 競技規則タブ -->
+    <div class="desc-block">
+      <h4>📖 競技規則タブ — 原本参照</h4>
+      <div style="font-size:12px;color:#344054;line-height:1.8;margin-top:6px">
+        <b>3モード切替：</b> 競技規則（第1〜50条） / インタープリテーション（490項目） / プレーコーリング・ガイドライン（図表付き）<br>
+        <b>機能：</b> テキスト検索・苦手フラグ・確認回数カウント・メモ追加・Refereeノートへの追加。各条文の「✓確認した」を押すと記録が積み上がります。
+      </div>
+    </div>
+
+    <!-- メモタブ -->
+    <div class="desc-block">
+      <h4>📝 メモタブ — 自由メモ帳</h4>
+      <div style="font-size:12px;color:#344054;line-height:1.8;margin-top:6px">
+        自由なメモを記録。「解決済み」フラグで整理可能。条文・クイズ・Refereeノートからもメモ追加ボタンでリンクできます。
+      </div>
+    </div>
+
+    <!-- 審判タブ -->
+    <div class="desc-block">
+      <h4>🏀 審判タブ — 審判ノート</h4>
+      <div style="font-size:12px;color:#344054;line-height:1.8;margin-top:6px">
+        <b>4つのサブメニュー：</b>
+        <div style="margin-top:6px;display:flex;flex-direction:column;gap:5px">
+          <div><span class="chip b">📌 Refereeノート</span> 条文・問題別のメモ・振り返り。「⭐ 次回重点」で次の試合へ引き継ぎ</div>
+          <div><span class="chip g">🎯 重点目標</span> 自由に目標を作成。条文のボタンからも追加可能</div>
+          <div><span class="chip o">📋 試合記録</span> 試合前の目標設定〜試合後の振り返りまでを1枚で管理</div>
+          <div><span class="chip b">📅 カレンダー</span> 学習・ノート記録・試合をカレンダーで可視化</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 記録タブ -->
+    <div class="desc-block">
+      <h4>📊 記録タブ — 成績分析</h4>
+      <div style="font-size:12px;color:#344054;line-height:1.8;margin-top:6px">
+        <b>8つの分析ビュー：</b>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+          <span class="chip b">🎯 難易度別</span>
+          <span class="chip b">📈 小テスト推移</span>
+          <span class="chip r">⚠️ 要注意問題</span>
+          <span class="chip g">📅 学習カレンダー</span>
+          <span class="chip b">📌 条文別出題数</span>
+          <span class="chip b">📈 成績の変化</span>
+          <span class="chip o">🏆 目標管理</span>
+          <span class="chip p">🔗 審判ノート×テスト</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 活用ヒント ===== -->
+<div class="section" id="tips">
+  <div class="section-label">Tips</div>
+  <div class="section-title">活用ヒント</div>
+  <div class="divider"></div>
+
+  <div class="two-col">
+    <div class="hint">
+      <div class="hint-icon">📱</div>
+      <div><b>PWAとしてインストール</b><br>ブラウザの「ホーム画面に追加」でアプリのようにアクセスできます。オフラインでも学習記録は保持されます。</div>
+    </div>
+    <div class="hint">
+      <div class="hint-icon">🌙</div>
+      <div><b>ダークモード対応</b><br>設定画面からダークモード・フォントサイズを変更できます。夜間の学習に最適です。</div>
+    </div>
+    <div class="hint">
+      <div class="hint-icon">🔁</div>
+      <div><b>記録はブラウザに保存</b><br>学習記録はブラウザのlocalStorageに保存されます。ブラウザのデータを消去すると記録もリセットされます。</div>
+    </div>
+    <div class="hint">
+      <div class="hint-icon">🔊</div>
+      <div><b>読み上げ機能</b><br>競技規則タブで「🔊 読み上げ」ボタンを押すと条文を音声読み上げします（端末のTTS機能を使用）。</div>
+    </div>
+    <div class="hint">
+      <div class="hint-icon">💡</div>
+      <div><b>黄色ハイライト＝2026年改定箇所</b><br>条文テキスト内の黄色背景は2026年度に改定された箇所を示しています。審判試験対策に重点的に学習しましょう。</div>
+    </div>
+    <div class="hint">
+      <div class="hint-icon">📊</div>
+      <div><b>目標設定で学習を加速</b><br>記録タブ「🏆 目標管理」から目標正答率と締め切り日を設定すると、達成率バーが表示されてモチベーションが上がります。</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="page-footer">
+  JBA競技規則2026 学習アプリ 取扱説明書 — 塩冶オールスターズ<br>
+  競技規則・インタープリテーション 2026年度版 / プレーコーリングガイドライン 20260401
+</div>
+
+</body>
+</html>
